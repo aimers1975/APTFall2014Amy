@@ -27,35 +27,23 @@ def highest_affinity(site_list, user_list, time_list):
     if (sitesandusers.has_key(site)):
       currentuser = user_list.pop()
       sitesandusers[site].append(currentuser)
-      k = site + ' ' + currentuser + ' '
-      #print k
-      #print sitesandusers[site]
     else:
       blanklist = list()
       sitesandusers[site] = blanklist
       currentuser = user_list.pop()
       sitesandusers[site].append(currentuser)
-      k = site + ' ' + currentuser
-      #print k
-      #print sitesandusers[site]
   maxaffinity = 0
   maxpair = tuple()
   for x in range(len(sitesandusers)):
     for y in range(x+1, len(sitesandusers)):
       if(sitesandusers.keys()[x] != sitesandusers.keys()[y]):
-        if((len(sitesandusers[sitesandusers.keys()[x]]) > maxaffinity) or (len(sitesandusers[sitesandusers.keys()[x]]) > maxaffinity)):
-          affinity = get_common_users(sitesandusers[sitesandusers.keys()[x]],sitesandusers[sitesandusers.keys()[y]])
-        #if (not sitesandusers.keys()[x].startswith('rare') and not sitesandusers.keys()[y].startswith('rare')):
-          #s = 'comparing: ' + sitesandusers.keys()[x] + ' ' + sitesandusers.keys()[y]
-          #print s
-          #print affinity
+        if((len(sitesandusers[sitesandusers.keys()[x]]) >= maxaffinity) or (len(sitesandusers[sitesandusers.keys()[x]]) >= maxaffinity)):
+          affinity = get_common_users(sitesandusers[sitesandusers.keys()[x]][:],sitesandusers[sitesandusers.keys()[y]][:])
           if (affinity >= maxaffinity):
             maxaffinity = affinity
             if(sitesandusers.keys()[y] < sitesandusers.keys()[x]):
               maxpair = (sitesandusers.keys()[y],sitesandusers.keys()[x])
             else:
               maxpair = (sitesandusers.keys()[x],sitesandusers.keys()[y])
-  print maxpair
-  print maxaffinity
   return maxpair
 
