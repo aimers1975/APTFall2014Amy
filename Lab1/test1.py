@@ -6,5 +6,7 @@ time_list = [1238972321, 1238972456, 1238972618, 1238972899, 1248472489, 1258861
 
 computed_result = compute_highest_affinity.highest_affinity(site_list, user_list, time_list)
 expected_result = ("a.com", "b.com")
-
+print 'Computed result: '
+print type(computed_result)
+print computed_result
 assert computed_result == expected_result

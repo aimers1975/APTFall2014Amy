@@ -1,0 +1,20 @@
+All requests and responses JSON-encoded; use HTTP POST for all requests.
+Write specific services for 
+#management (in which you take a user id and return two lists of streams)
+
+#create a stream (which takes a stream definition and returns a status code)
+
+#view a stream (which takes a stream id and a page range and returns a list of URLs to images, and a page range)
+
+#image upload (which takes a stream id and a file)
+
+#view all streams (which returns a list of names of streams and their cover images)
+
+#search streams (which takes a query string and returns a list of streams (titles and cover image urls) that contain matching text, 
+
+#most viewed streams (which returns a list of streams sorted by recent access frequency)
+
+#reporting request.
+You have a lot of leeway here, e.g., you may choose to return stream ids for trending, and delegate titles and cover images to separate calls.
+You do not need to implement authentication for this step.
+Write a Python test script in which you perform calls to your services that demonstrates its capabilities.
