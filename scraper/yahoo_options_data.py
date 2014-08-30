@@ -13,15 +13,26 @@ def get_text(filename):
 	text = fhand.read()
 	return text
 
-def get_stock_price(input):
-	for link in soup.find_all('span'):
-		if(link['id'] == 'yfs_l84_aapl'):
-			return link.string
+def get_stock_price_from_soup(inputsoup):
+	  for link in inputsoup.find_all('span'):
+	  	try:
+	  	  testlink = link['id'].startswith('yfs_l84')
+	  	  if(testlink):
+	  	    return link.string
+	  	except:
+	  		continue
+def get_expiration_urls_from_soup(inputsoup):
+	return
+
+def get_sorted_contracts_from_soup(inputsoup):
+	return
+
+
 
 datafile = raw_input("Enter the text file: ")
 data = get_text(datafile)
 soup = BeautifulSoup(data)
-print get_stock_price(soup)
+print get_stock_price_from_soup(soup)
 
 
 #a JSON object with 3 fields. 
