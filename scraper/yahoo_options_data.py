@@ -50,11 +50,16 @@ def createstockdict():
     stockdict['Vol'] = ''
     return stockdict
 
+def get_option_string(data):
+	calldatastringlist = re.findall('Call\sOptions.+?(<td class="yfnc_h.+)Put\sOptions',data)
+	finaldatastring = calldatastringlist[0] + re.findall('Put\sOptions.+?(<td class="yfnc_tabledata1.+)<table border="0"\scellpadding="2"\scellspacing="0">',data)[0]
+	return finaldatastring
+
 def get_call_options(data):
-	calloptionlist = re.findall('Call\sOptions.+?(<td class="yfnc_h.+)Put\sOptions',data)
+	#calloptionlist = re.findall('Call\sOptions.+?(<td class="yfnc_h.+)Put\sOptions',data)
 	wfile = open('list.txt','w')
-	wfile.write('Starting call options....********************')
-	calloptiondata = calloptionlist.pop()
+	wfile.write('Starting call options....**************************************************************************\n')
+	calloptiondata = get_option_string(data)
 	calloptionsoup = BeautifulSoup(calloptiondata)
 	calllist = list()
 	calllistitem = createstockdict()
@@ -122,16 +127,20 @@ def get_call_options(data):
 	  			for x in range(0,looprange):
 	  				wfile.write(str(x))
 	  				wfile.write('\n')
-	  				if(float(calllistitem['Open']) < float(calllist[x]['Open'])):
+	  				if(float(calllistitem['Open']) <= float(calllist[x]['Open'])):
 	  					s = 'Callistiem open is: ' + str(calllistitem['Open']) + '<' + str(calllist[x]['Open']) + '\n'
 	  					wfile.write(s)
 	  					if(x == looprange-1):
-	  						wfile.write('appending at end of list\n')
-	  						calllist.append(calllistitem)
+	  						y = "Appending at end of list spot" + str(looprange) + '\n'
+	  						wfile.write(y)
+	  						calllist.insert(looprange,calllistitem)
 	  						break
 	  					continue
 	  				else:
+	  					s = 'Callistiem open is: ' + str(calllistitem['Open']) + '= to or greater than' + str(calllist[x]['Open']) + '\n'
+	  					wfile.write(s)
 	  					calllist.insert(x,calllistitem)	  	
+	  					#Need to iterate here if they are equal...and insert after?
 	  					wfile.write('inserting calllistitem: \n')
 	  					wfile.write(str(x))
 	  					wfile.write('\n')
@@ -281,8 +290,10 @@ soup = BeautifulSoup(data)
 stockpriceval = get_stock_price_from_soup(soup)
 expyurlsvallist = get_expiration_urls_from_soup(soup,data)
 contstring = get_call_options(data)
-contstring2 = get_put_options(data)
-build_json(stockpriceval,expyurlsvallist, contstring)
+#contstring2 = get_put_options(data)
+jsonfile = open('jsonoutput.txt','w')
+jsonfile.write(str(build_json(stockpriceval,expyurlsvallist, contstring)))
+jsonfile.close()
 
 
 
