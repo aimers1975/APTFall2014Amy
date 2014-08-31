@@ -62,7 +62,8 @@ def get_call_options(data):
 	  thislink = link.get('class')
 	  if(thislink == None):
 	  	continue
-	  if(thislink.pop().startswith('yfnc_h')):
+	  currentlink = thislink.pop()
+	  if(currentlink.startswith('yfnc_h') or currentlink.startswith('yfnc_tabledata1')):
 	  	if (iter == 'strike'):
 	  		calllistitem['Strike'] = str(link.string)
 	  		iter = 'symbol'
@@ -93,10 +94,6 @@ def get_call_options(data):
 	  			calllist.append(calllistitem)
 	  		else:
 	  			looprange = len(calllist)
-	  			wfile.write('looprange: ')
-	  			wfile.write('\n')
-	  			wfile.write(str(looprange))
-	  			wfile.write('\n')
 	  			for x in range(looprange):
 	  				if(float(calllistitem['Open']) < float(calllist[x]['Open'])):
 	  					continue
@@ -105,11 +102,9 @@ def get_call_options(data):
 	  					wfile.write('inserting calllistitem')
 	  					break		
 	  				print x
-	  				wfile.write(str(x))
-	  				wfile.write('\n')
 	  		calllistitem = createstockdict()
+	wfile.write(str(calllist))
 	wfile.close()
-	#print calllist
 	return calllist
 
 def get_symbol(inputstring):
@@ -152,6 +147,7 @@ expyurlsvallist = get_expiration_urls_from_soup(soup,data)
 contstring = get_call_options(data)
 print 'List of options length: '
 print len(contstring)
+
 print build_json(stockpriceval,expyurlsvallist, contstring)
 
 
