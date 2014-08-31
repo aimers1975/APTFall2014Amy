@@ -6,8 +6,13 @@ from bs4 import BeautifulSoup
 import collections 
 
 def contractAsJson(filename):
-  jsonQuoteData = "[]"
-  return jsonQuoteData
+	data = get_text(filename)
+	soup = BeautifulSoup(data)
+	stockpriceval = get_stock_price_from_soup(soup)
+	expyurlsvallist = get_expiration_urls_from_soup(data)
+	contstring = get_call_options(data)
+	jsonQuoteData = build_json(stockpriceval,expyurlsvallist,contstring)
+	return jsonQuoteData
 
 def get_text(filename):
 	fhand = open(filename)
@@ -22,19 +27,25 @@ def get_stock_price_from_soup(inputsoup):
 	  	    	floatprice = float(link.string)
 	  	    	return floatprice
 
-def get_expiration_urls_from_soup(inputsoup,data):
+def get_expiration_urls_from_soup(data):
 	  expirationdatalist = re.findall('By\sExpiration:(.+?)<table',data)
 	  expirationdata = expirationdatalist.pop()
+	  print expirationdata
 	  expirationsoup = BeautifulSoup(expirationdata) 
 	  experationlinklist = []
 	  for link in expirationsoup.find_all('a'):
 	  	thislink = link.get('href')
 	  	yahoolink = 'http://finance.yahoo.com' + thislink
-	  	experationlinklist.append(yahoolink)
+	  	ampfixlink = yahoolink.replace('&','&amp;')
+	  	experationlinklist.append(ampfixlink)
+	  experationlinklist.append(get_current_page_datelink(data))
 	  return experationlinklist  	
 
-def get_sorted_contracts_from_soup(inputsoup):
-	return
+def get_current_page_datelink(data):
+	currentdatelist = re.findall('Highlighted options are in-the-money.</small></td></tr></table><p style="text-align:center"><a href="(.*?)"><strong>Expand to Straddle View...',data)
+	currentdatelinkstring = currentdatelist.pop()
+	fullcurrentdatelink = 'http://finance.yahoo.com' + currentdatelinkstring
+	return fullcurrentdatelink
 
 def createstockdict():
     stockdict = collections.OrderedDict()
@@ -56,7 +67,6 @@ def get_option_string(data):
 	return finaldatastring
 
 def get_call_options(data):
-	#calloptionlist = re.findall('Call\sOptions.+?(<td class="yfnc_h.+)Put\sOptions',data)
 	wfile = open('list.txt','w')
 	wfile.write('Starting call options....**************************************************************************\n')
 	calloptiondata = get_option_string(data)
@@ -92,8 +102,9 @@ def get_call_options(data):
 	  		wfile.write('\n')
 	  		iter = 'change'
 	  	elif (iter == 'change'):
-	  		calllistitem['Change'] = str(link.string)
-	  		wfile.write(str(link.string))
+	  		changeval = re.findall('<td\salign="right"\sclass=""><span\sid="yfs_c10.*?color:.*;">([0-9]*.[0-9][0-9]).*', str(link))[0]
+	  		calllistitem['Change'] = ' ' + changeval
+	  		wfile.write(str(link))
 	  		wfile.write('\n')
 	  		iter = 'bid'
 	  	elif (iter == 'bid'):
@@ -112,8 +123,9 @@ def get_call_options(data):
 	  		wfile.write('\n')
 	  		iter = 'open'
 	  	elif (iter == 'open'):
-	  		calllistitem['Open'] = str(link.string).replace(',','')
-	  		wfile.write(str(link.string).replace(',',''))
+	  		calllistitemfloatval = float(str(link.string).replace(',',''))
+	  		calllistitem['Open'] = str(link.string)
+	  		wfile.write(str(link.string))
 	  		wfile.write('\n')
 	  		iter = 'strike'
 	  		if(len(calllist) == 0):
@@ -127,8 +139,9 @@ def get_call_options(data):
 	  			for x in range(0,looprange):
 	  				wfile.write(str(x))
 	  				wfile.write('\n')
-	  				if(float(calllistitem['Open']) <= float(calllist[x]['Open'])):
-	  					s = 'Callistiem open is: ' + str(calllistitem['Open']) + '<' + str(calllist[x]['Open']) + '\n'
+	  				calllistitemcompare = calllist[x]['Open'].replace(',','')
+	  				if(calllistitemfloatval <= float(calllistitemcompare)):
+	  					s = 'calllistitemfloatval open is: ' + str(calllistitemfloatval) + '<' + str(calllistitemcompare) + '\n'
 	  					wfile.write(s)
 	  					if(x == looprange-1):
 	  						y = "Appending at end of list spot" + str(looprange) + '\n'
@@ -137,7 +150,7 @@ def get_call_options(data):
 	  						break
 	  					continue
 	  				else:
-	  					s = 'Callistiem open is: ' + str(calllistitem['Open']) + '= to or greater than' + str(calllist[x]['Open']) + '\n'
+	  					s = 'Callistiem open is: ' + str(calllistitemfloatval) + '= to or greater than' + str(calllistitemcompare) + '\n'
 	  					wfile.write(s)
 	  					calllist.insert(x,calllistitem)	  	
 	  					#Need to iterate here if they are equal...and insert after?
@@ -155,102 +168,6 @@ def get_call_options(data):
 	wfile.close()
 	return calllist
 
-def get_put_options(data):
-	calloptionlist = re.findall('Put\sOptions.+?(<td class="yfnc_tabledata1.+)<table border="0"\scellpadding="2"\scellspacing="0">',data)
-	wfile = open('list.txt','w')
-	wfile.write('Starting put options....******************************************************************************\n')
-	calloptiondata = calloptionlist.pop()
-	wfile.write(str(calloptiondata))
-	calloptionsoup = BeautifulSoup(calloptiondata)
-	calllist = list()
-	calllistitem = createstockdict()
-	iter = 'strike'
-	for link in calloptionsoup.find_all('td'):
-	  thislink = link.get('class')
-	  if(thislink == None):
-	  	continue
-	  currentlink = thislink.pop()
-	  if(currentlink.startswith('yfnc_h') or currentlink.startswith('yfnc_tabledata1')):
-	  	if (iter == 'strike'):
-	  		calllistitem['Strike'] = str(link.string)
-	  		wfile.write(str(link.string))
-	  		wfile.write('\n')
-	  		iter = 'symbol'
-	  	elif (iter == 'symbol'):
-	  		calllistitem['Symbol'] = get_symbol(link.string)
-	  		wfile.write(str(get_symbol(link.string)))
-	  		wfile.write('\n')
-	  		calllistitem['Date'] = get_date(link.string)
-	  		wfile.write(str(get_date(link.string)))
-	  		wfile.write('\n')
-	  		calllistitem['Type'] = get_type(link.string)
-	  		wfile.write(str(get_type(link.string)))
-	  		wfile.write('\n')
-	  		iter = 'last'
-	  	elif (iter == 'last'):
-	  		calllistitem['Last'] = str(link.string)
-	  		wfile.write(str(link.string))
-	  		wfile.write('\n')
-	  		iter = 'change'
-	  	elif (iter == 'change'):
-	  		calllistitem['Change'] = str(link.string)
-	  		wfile.write(str(link.string))
-	  		wfile.write('\n')
-	  		iter = 'bid'
-	  	elif (iter == 'bid'):
-	  		calllistitem['Bid'] = str(link.string)
-	  		wfile.write(str(link.string))
-	  		wfile.write('\n')
-	  		iter = 'ask'
-	  	elif (iter == 'ask'):
-	  		calllistitem['Ask'] = str(link.string)
-	  		wfile.write(str(link.string))
-	  		wfile.write('\n')
-	  		iter = 'vol'
-	  	elif (iter == 'vol'):
-	  		calllistitem['Vol'] = str(link.string)
-	  		wfile.write(str(link.string))
-	  		wfile.write('\n')
-	  		iter = 'open'
-	  	elif (iter == 'open'):
-	  		calllistitem['Open'] = str(link.string).replace(',','')
-	  		wfile.write(str(link.string).replace(',',''))
-	  		wfile.write('\n')
-	  		iter = 'strike'
-	  		if(len(calllist) == 0):
-	  			calllist.append(calllistitem)
-	  			wfile.write('appending calllistitem 0\n')
-	  		else:
-	  			looprange = len(calllist)
-	  			wfile.write('looprange: \n')
-	  			wfile.write(str(looprange))
-	  			wfile.write('\n')
-	  			for x in range(0,looprange):
-	  				wfile.write(str(x))
-	  				wfile.write('\n')
-	  				if(float(calllistitem['Open']) < float(calllist[x]['Open'])):
-	  					s = 'Callistiem open is: ' + str(calllistitem['Open']) + '<' + str(calllist[x]['Open']) + '\n'
-	  					wfile.write(s)
-	  					if(x == looprange-1):
-	  						wfile.write('appending at end of list\n')
-	  						calllist.append(calllistitem)
-	  						break
-	  					continue
-	  				else:
-	  					calllist.insert(x,calllistitem)	  	
-	  					wfile.write('inserting calllistitem: \n')
-	  					wfile.write(str(x))
-	  					wfile.write('\n')
-	  					break
-	  				wfile.write('appending calllistitem:\n')
-	  				wfile.write(str(x))
-	  				wfile.write('\n')	
-	  		calllistitem = createstockdict()
-	wfile.write(str(calllist))
-	wfile.write('calllist length: ')
-	wfile.write(str(len(calllist)))
-	wfile.close()
-	return calllist
 
 def get_symbol(inputstring):
 	if(len(check_date(inputstring)) > 6):
@@ -281,19 +198,19 @@ def build_json(stockprice,expirations,contracts):
 	pricedict['currPrice'] = stockprice
 	pricedict['dateUrls'] = expirations
 	pricedict['optionQuotes'] = contracts
-	jsonstring = json.dumps(pricedict)
+	jsonstring = json.dumps(pricedict, indent=4)
 	return jsonstring
 
-datafile = raw_input("Enter the text file: ")
-data = get_text(datafile)
-soup = BeautifulSoup(data)
-stockpriceval = get_stock_price_from_soup(soup)
-expyurlsvallist = get_expiration_urls_from_soup(soup,data)
-contstring = get_call_options(data)
-#contstring2 = get_put_options(data)
-jsonfile = open('jsonoutput.txt','w')
-jsonfile.write(str(build_json(stockpriceval,expyurlsvallist, contstring)))
-jsonfile.close()
+
+#datafile = raw_input("Enter the text file: ")
+#data = get_text(datafile)
+#soup = BeautifulSoup(data)
+#stockpriceval = get_stock_price_from_soup(soup)
+#expyurlsvallist = get_expiration_urls_from_soup(data)
+#contstring = get_call_options(data)
+#jsonfile = open('jsonoutput.txt','w')
+#jsonfile.write(str(build_json(stockpriceval,expyurlsvallist, contstring)))
+#jsonfile.close()
 
 
 
