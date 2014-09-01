@@ -12,6 +12,9 @@ def contractAsJson(filename):
 	expyurlsvallist = get_expiration_urls_from_soup(data)
 	contstring = get_call_options(data)
 	jsonQuoteData = build_json(stockpriceval,expyurlsvallist,contstring)
+	outname = re.findall('(.*?)\.[A-Za-z][A-Za-z][A-Za-z]',filename)[0] + 'jsonout.txt'
+	jfile = open(outname,'w')
+	jfile.write(str(jsonQuoteData))
 	return jsonQuoteData
 
 def get_text(filename):
@@ -171,18 +174,18 @@ def get_call_options(data):
 
 def get_symbol(inputstring):
 	if(len(check_date(inputstring)) > 6):
-		symbol = re.findall('([A-a]+[0-9])[0-9]*.*', inputstring)
+		symbol = re.findall('([A-Za-z]+[0-9])[0-9]*.*', inputstring)
 		return symbol.pop()
 	else:
-		symbol = re.findall('([A-a]+)[0-9]*.*', inputstring)
+		symbol = re.findall('([A-Za-z]+)[0-9]*.*', inputstring)
 		return symbol.pop()
 
 def check_date(inputstring):
-	symbol = re.findall('[A-a]+([0-9]*)[A-a].*', inputstring)
+	symbol = re.findall('[A-Za-z]+([0-9]*)[A-a].*', inputstring)
 	return symbol.pop()
 
 def get_date(inputstring):
-	symbol = re.findall('[A-a]+([0-9]*)[A-a].*', inputstring)
+	symbol = re.findall('[A-Za-z]+([0-9]*)[A-a].*', inputstring)
 	testforextrachar = symbol.pop()
 	if(len(testforextrachar) > 6):
 		return testforextrachar[1:]
@@ -190,7 +193,7 @@ def get_date(inputstring):
 		return testforextrachar
 
 def get_type(inputstring):
-	symbol = re.findall('[A-a]+[0-9]*([A-a]).*', inputstring)
+	symbol = re.findall('[A-Za-z]+[0-9]*([A-a]).*', inputstring)
 	return symbol.pop()
 
 def build_json(stockprice,expirations,contracts):
