@@ -9,8 +9,15 @@ class student(object):
 	    self.d = {'name':self.name,'GPA':self.GPA,'age':self.age}
 	    return str(self.d)
 
-	def  __lt__(self):
-		return 
+	def  __lt__(self,obj):
+		if isinstance(obj,student):
+			if(self.age < obj.age):
+				return True
+			else:
+				return False
+		else:
+			return NotImplemented
+
 
 	def  __eq__(self,obj):
 		return (isinstance(obj,student) and (obj.name == self.name) and (obj.GPA == self.GPA) and (obj.age == self.age))
