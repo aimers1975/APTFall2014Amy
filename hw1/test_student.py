@@ -37,13 +37,31 @@ def test_str():
 	print 'String test done!'
 
 def test_hash():
-	amyStudent = student()
-	print hash(amyStudent)
+	hashStudent = student()
+	print hash(hashStudent)
 	name = 'amy'
 	GPA = 3.4
 	age = 16
-	amyStudent = student(name,GPA,age)
-	print hash(amyStudent)
+	print hash(hashStudent)
+	hash2Student = student(name,GPA,age)
+	hash3Student = student(name,GPA,age)
+	print hash(hash2Student)
+	print hash(hash3Student)
+
+def test_eq():
+	eqstudent1 = student('john',3.5,10)
+	eqstudent2 = student('john',3.5,10)
+	if(eqstudent1 == eqstudent2):
+		print 'is equal'
+	eqstudent1 = student('john',4.0,10)
+	eqstudent2 = student('john',3.5,10)
+	if(eqstudent1 == eqstudent2):
+		print 'is equal'
+	else:
+		print 'is not equal'
+
+
 test_create()
 test_str()
 test_hash()
+test_eq()

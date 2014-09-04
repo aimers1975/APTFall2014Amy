@@ -3,15 +3,18 @@ class student(object):
 	    self.name = inname
 	    self.GPA = inGPA
 	    self.age = inage
-		d = {'name':self.name,'GPA':self.GPA,'age':self.age}
+	    #self.d = {'name':self.name,'GPA':self.GPA,'age':self.age}
 
 	def __str__(self):
-		return str(d)
+	    self.d = {'name':self.name,'GPA':self.GPA,'age':self.age}
+	    return str(self.d)
 
-	def  __lt__():
+	def  __lt__(self):
 		return 
-	def  __eq__():
-	    return 
 
-    def __hash__():
-    	return hash(self.name)
+	def  __eq__(self,obj):
+		return (isinstance(obj,student) and (obj.name == self.name) and (obj.GPA == self.GPA) and (obj.age == self.age))
+
+	def __hash__(self):
+		self.d = {'name':self.name,'GPA':self.GPA,'age':self.age}
+		return hash(str(self.d))
