@@ -45,6 +45,10 @@ def test_hash():
 	print hash(hashStudent)
 	hash2Student = student(name,GPA,age)
 	hash3Student = student(name,GPA,age)
+	if(hash2Student == hash3Student):
+		assert (hash(hash2Student) == hash(hash3Student))
+	if(not hashStudent == hash2Student):
+		assert (not hash(hashStudent) == hash(hash2Student))
 	print hash(hash2Student)
 	print hash(hash3Student)
 	print 'Hash test done!'
@@ -86,30 +90,39 @@ def test_lt():
     assert (ltstudent < ltstudent2) == False
     ltstudent = student('amy',2.0,5)
     ltstudent2 = student('joe',3.0,5)
-    assert (ltstudent < ltstudent2) == False   
+    assert (ltstudent < ltstudent2) == True   
     print 'Less than test done!'
 
 def trysorting():
-	astudent = student('a','1.0','1')
-	bstudent = student('b','4.0','2')
-	cstudent = student('c','3.0','6')
-	dstudent = student('d','2.5','9')
-	estudent = student('e','1.6','3')
-	fstudent = student('f','3.3','5')
+	astudent = student('a',1.0,1)
+	Fstudent = student('F',1.0,1)
+	bstudent = student('b',4.0,2)
+	Estudent = student('E',3.8,4)
+	cstudent = student('c',3.0,6)
+	Dstudent = student('D',3.0,3)
+	dstudent = student('d',2.5,9)
+	Cstudent = student('C',2.5,4)
+	estudent = student('e',1.6,3)
+	Bstudent = student('B',4.0,11)
+	fstudent = student('f',3.3,5)
+	Astudent = student('f',1.5,12)
 	studentlist = list()
 	studentlist.append(astudent)
+	studentlist.append(Fstudent)
 	studentlist.append(bstudent)
+	studentlist.append(Estudent)
 	studentlist.append(cstudent)
+	studentlist.append(Dstudent)
 	studentlist.append(dstudent)
+	studentlist.append(Cstudent)
 	studentlist.append(estudent)
+	studentlist.append(Bstudent)
 	studentlist.append(fstudent)
+	studentlist.append(Astudent)
 	sortedlist = sorted(studentlist)
 	for thisstudent in sortedlist:
 		print str(thisstudent)
 	print 'Sorting Test Done!'	
-
-
-
 
 test_create()
 test_str()

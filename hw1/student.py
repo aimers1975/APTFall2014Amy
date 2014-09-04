@@ -13,6 +13,16 @@ class student(object):
 		if isinstance(obj,student):
 			if(self.age < obj.age):
 				return True
+			elif(self.age == obj.age):
+				if(self.GPA < obj.GPA):
+					return True
+				elif(self.GPA == obj.GPR):
+					if(self.name < obj.name):
+						return True
+					else:
+						return False
+				else:
+					return False
 			else:
 				return False
 		else:
