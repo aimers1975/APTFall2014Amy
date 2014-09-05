@@ -11,13 +11,13 @@ class student(object):
 
 	def  __lt__(self,obj):
 		if isinstance(obj,student):
-			if(self.age < obj.age):
+			if(self.GPA < obj.GPA):
 				return True
-			elif(self.age == obj.age):
-				if(self.GPA < obj.GPA):
+			elif(self.GPA == obj.GPA):
+				if(self.name < obj.name):
 					return True
-				elif(self.GPA == obj.GPR):
-					if(self.name < obj.name):
+				elif(self.name == obj.name):
+					if(self.age < obj.age):
 						return True
 					else:
 						return False
