@@ -144,20 +144,19 @@ def trysorting():
     sortedcheck.append(a2student)
     sortedcheck.append(dstudent)
     sortedcheck.append(Dstudent)
-    sortedcheck.append(cstudent)
     sortedcheck.append(c3student)
+    sortedcheck.append(cstudent)
     sortedcheck.append(c2student)
     sortedcheck.append(fstudent)
     sortedcheck.append(Estudent)
     sortedcheck.append(Bstudent)
     sortedcheck.append(bstudent)
-    for thisstudent in sortedlist:
-    	print str(thisstudent)
-    for checkstudent in sortedcheck:
-    	print str(checkstudent)
-    print str(sortedlist)
-    print str(sortedcheck)
     assert str(sortedlist) == str(sortedcheck)
+    newstudentlist = studentlist[:]
+    newstudentlist.sort(key=lambda student:student['age'])
+    newstudentlist.sort(key=lambda student:student['name'])
+    newstudentlist.sort(key=lambda student:student['GPA'])
+    assert str(newstudentlist) == str(sortedcheck)
     print 'Sorting Test Done!'	
 
 test_create()

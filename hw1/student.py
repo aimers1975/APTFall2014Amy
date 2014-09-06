@@ -3,7 +3,6 @@ class student(object):
 	    self.name = inname
 	    self.GPA = inGPA
 	    self.age = inage
-	    #self.d = {'name':self.name,'GPA':self.GPA,'age':self.age}
 
 	def __str__(self):
 	    self.d = {'name':self.name,'GPA':self.GPA,'age':self.age}
@@ -35,3 +34,13 @@ class student(object):
 	def __hash__(self):
 		self.d = {'name':self.name,'GPA':self.GPA,'age':self.age}
 		return hash(str(self.d))
+
+	def __getitem__(self,itemstr):
+		if(itemstr == 'name'):
+			return self.name
+		elif(itemstr == 'GPA'):
+			return self.GPA
+		elif(itemstr == 'age'):
+			return self.age
+		else:
+		    return None 
