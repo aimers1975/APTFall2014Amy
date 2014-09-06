@@ -16,17 +16,35 @@ def create_deck():
            card = (rank,suit)
            deck.append(card)
 
-   print str(deck)
+   #print str(deck)
    return deck
+
+def create_hand(deck):
+  thishand = dict(list())
+
+  for n in range(0,4):
+ #     print ('drawing card' + str(n))
+      if(len(deck) > 0):
+          mycard = gofish1.getCard(deck)
+          print str(mycard)
+          if(thishand.has_key(mycard[0])):
+            thishand[mycard[0]].append(mycard[1])
+          else:
+            blanklist = list()
+            thishand[mycard[0]] = blanklist
+            thishand[mycard[0]].append(mycard[1])
+  return thishand
 
 thisdeck = create_deck()
 assert len(thisdeck) == 52
+#assert each card is unique
+myhand = create_hand(thisdeck)
+assert len(thisdeck) == 48
+#print str(myhand)
 logfiles = open('cardlog.txt','w')
-for x in range(1,53):
-  if(len(thisdeck) > 0):
-    logfiles.write(str(gofish1.getCard(thisdeck)))
-    logfiles.write('\n')
-    logfiles.write(str(len(thisdeck)))
-    logfiles.write('\n')
-
+while len(thisdeck) > 0:
+  logfiles.write('Deck length: ' + str(len(thisdeck)) + '\n')
+  logfiles.write('My hand: ' + str(myhand) + '\n')
+  gofish1.drawCard('Amy', thisdeck,myhand)
+  logfiles.write('My hand: ' + str(myhand) + '\n')
 logfiles.close()   
