@@ -7,7 +7,6 @@ def create_deck():
    suits = {1:'spades',2:'hearts',3:'diamonds',4:'clubs'}
    for x in range(2,15):
        for y in range(1,5):
-           #build tuple ('rank','suit')
            suit = suits[y]
            if(x<11):
                rank = str(x)
@@ -15,18 +14,13 @@ def create_deck():
            	   rank = royalty[x]
            card = (rank,suit)
            deck.append(card)
-
-   #print str(deck)
    return deck
 
 def create_hand(deck):
   thishand = dict(list())
-
   for n in range(0,4):
- #     print ('drawing card' + str(n))
       if(len(deck) > 0):
           mycard = gofish1.getCard(deck)
-          print str(mycard)
           if(thishand.has_key(mycard[0])):
             thishand[mycard[0]].append(mycard[1])
           else:
@@ -35,16 +29,37 @@ def create_hand(deck):
             thishand[mycard[0]].append(mycard[1])
   return thishand
 
+def play_game(deck,hand):
+  logfiles = open('cardlog.txt','w')
+  previousturnlength = 48
+  while len(deck) > 0:
+    logfiles.write('Deck length: ' + str(len(deck)) + '\n')
+    logfiles.write('My hand: ' + str(hand) + '\n')
+    gofish1.drawCard('Amy',deck,hand)
+    assert len(deck) == (previousturnlength-1), 'Deck does not have one less card'
+    previousturnlength = len(deck)
+    logfiles.write('My hand: ' + str(hand) + '\n')
+    if len(deck) < 13:
+      for x in range(12,0,-1):
+        if len(deck) == x:
+          assert (len(hand) + len(deck)) <= x*4, 'Card not removed from hand'
+  logfiles.close()   
+
 thisdeck = create_deck()
-assert len(thisdeck) == 52
-#assert each card is unique
+assert len(thisdeck) == 52, 'Deck was not created correctly, too few cards.'
 myhand = create_hand(thisdeck)
-assert len(thisdeck) == 48
-#print str(myhand)
-logfiles = open('cardlog.txt','w')
-while len(thisdeck) > 0:
-  logfiles.write('Deck length: ' + str(len(thisdeck)) + '\n')
-  logfiles.write('My hand: ' + str(myhand) + '\n')
-  gofish1.drawCard('Amy', thisdeck,myhand)
-  logfiles.write('My hand: ' + str(myhand) + '\n')
-logfiles.close()   
+assert len(thisdeck) == 48, 'First hand left incorrect number of cards in deck'
+play_game(thisdeck,myhand)
+assert len(thisdeck) == 0, 'Cards remaining in deck after game'
+assert len(myhand) == 0, 'Cards remaining in hand after game'
+
+
+
+
+
+
+
+
+
+
+

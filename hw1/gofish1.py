@@ -57,8 +57,6 @@ def drawCard(name, deck, hand):
     if cardRank in hand:
       # append this suit to the result
       hand[cardRank].append(cardSuit)
-      print str(cardRank)
-      print str(hand[cardRank])
       if len(hand[cardRank]) == 4:
         print name, "lay down", cardRank + "s"
         del hand[cardRank]
