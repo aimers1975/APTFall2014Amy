@@ -8,3 +8,4 @@ computed_result = compute_highest_affinity.highest_affinity(site_list, user_list
 expected_result = ("a.com", "b.com")
 
 assert computed_result == expected_result
+print 'Test1 complete!'

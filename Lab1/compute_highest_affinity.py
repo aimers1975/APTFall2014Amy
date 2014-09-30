@@ -41,6 +41,7 @@ def highest_affinity(site_list, user_list, time_list):
           affinity = get_common_users(sitesandusers[sitesandusers.keys()[x]][:],sitesandusers[sitesandusers.keys()[y]][:])
           if (affinity >= maxaffinity):
             maxaffinity = affinity
+            print str(sitesandusers.keys()[y]) + str(sitesandusers.keys[x])
             if(sitesandusers.keys()[y] < sitesandusers.keys()[x]):
               maxpair = (sitesandusers.keys()[y],sitesandusers.keys()[x])
             else:
