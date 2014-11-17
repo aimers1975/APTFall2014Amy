@@ -83,9 +83,9 @@ public class RationalTest extends TestCase {
         assertFalse(new Rational(2,3).equals(new Rational(1,3)));
         assertFalse(new Rational(2,6).equals(new Rational(1,4)));
         assertFalse(new Rational(15,3).equals(new Rational(5,2)));
-        assertFalse(new Rational(0,3).equals(new Rational(0,4)));
         assertFalse(new Rational(Integer.MAX_VALUE,1).equals(new Rational(Integer.MAX_VALUE,3)));
         assertFalse(new Rational(1,Integer.MAX_VALUE).equals(new Rational(3,Integer.MAX_VALUE)));
+        assertFalse(new Rational(0,3).equals(new Rational(0,4)));
     }
 
     public void testAccessors() {
@@ -107,6 +107,8 @@ public class RationalTest extends TestCase {
         assertEquals(new Rational(Integer.MIN_VALUE,4),first.plus(fifth));
         assertEquals(new Rational(0,4),first.plus(sixth));
         assertEquals(new Rational(0,4),first.plus(seventh));
+        assertEquals(new Rational(0,1),sixth.plus(first));
+        assertEquals(new Rational(0,4),first.plus(null));
     }
 
     public void testMinus() {
@@ -121,8 +123,9 @@ public class RationalTest extends TestCase {
         assertEquals(new Rational(1,4),first.minus(third));
         assertEquals(new Rational(-3,4),first.minus(fourth));
         assertEquals(new Rational(2147483646,4),fifth.minus(first));
-        assertEquals(new Rational(2,4),first.minus(sixth));
-        assertEquals(new Rational(2,4),first.minus(seventh));        
+        assertEquals(new Rational(2,4),first.minus(seventh)); 
+        assertEquals(new Rational(2,4),first.minus(sixth));       
+        assertEquals(new Rational(2,4),first.minus(null));
     }
 
     public void testDivides() {
@@ -141,9 +144,12 @@ public class RationalTest extends TestCase {
             e.printStackTrace();
         }
         assertTrue(gotException);
+        assertEquals(new Rational(4,-4),sixth.divides(first));
+        assertEquals(new Rational(3,16),sixth.divides(second));
         assertEquals(new Rational(1,4),first.divides(fourth));
         assertEquals(new Rational(-1,1),first.divides(sixth));
         assertEquals(new Rational(1,-1),first.divides(seventh)); 
+        assertEquals(new Rational(1,-1),first.divides(null)); 
     }  
 
     public void testTimes() {
@@ -157,7 +163,8 @@ public class RationalTest extends TestCase {
         assertEquals(new Rational(0,8),first.times(third));
         assertEquals(new Rational(1,4),first.times(fourth));
         assertEquals(new Rational(1,-16),first.times(sixth));
-        assertEquals(new Rational(-1,16),first.times(seventh));        
+        assertEquals(new Rational(-1,16),first.times(seventh)); 
+        assertEquals(new Rational(-1,16),first.times(null));        
     }     
 
     public void testSetGetTolerance() {
@@ -168,15 +175,6 @@ public class RationalTest extends TestCase {
         Rational.setTolerance(s);
         assertEquals(Rational.getTolerance(),new Rational(4,1));
         Boolean gotException = false;
-        s = new Rational(-1,4);
-        try {
-            Rational.setTolerance(s);
-        } catch (Exception e) {
-            gotException = true;
-            e.printStackTrace();
-        }
-        assertTrue(gotException);
-        gotException = false;
         s = new Rational(4,-1);
         try {
             Rational.setTolerance(s);
@@ -197,7 +195,23 @@ public class RationalTest extends TestCase {
         s = new Rational(0,1);
         Rational.setTolerance(s);
         assertEquals(Rational.getTolerance(),new Rational(0,1));
-
+                gotException = false;
+        try {
+            Rational.setTolerance(null);
+        } catch (Exception e) {
+            gotException = true;
+            e.printStackTrace();
+        }
+        assertTrue(gotException);
+        gotException = false;
+        s = new Rational(-1,4);
+        try {
+            Rational.setTolerance(s);
+        } catch (Exception e) {
+            gotException = true;
+            e.printStackTrace();
+        }
+        assertTrue(gotException);
     }
 
     public void testIsLessThan() {
@@ -214,6 +228,10 @@ public class RationalTest extends TestCase {
         assertFalse(first.isLessThan(fifth)); 
         assertFalse(first.isLessThan(sixth));
         assertFalse(first.isLessThan(seventh));
+        assertTrue(seventh.isLessThan(first));
+        assertTrue(seventh.isLessThan(second));
+        assertFalse(seventh.isLessThan(sixth));
+        assertFalse(first.isLessThan(null));
     }
 
     public void testAbs() {
@@ -229,6 +247,8 @@ public class RationalTest extends TestCase {
         assertEquals(new Rational(1,4),first.abs());
         assertEquals(new Rational(4,3),second.abs());
         assertEquals(new Rational(0,2),third.abs());
+        assertEquals(new Rational(1,4),sixth.abs());
+        assertEquals(new Rational(1,4),seventh.abs()); 
         try {
             Rational result = fifth.abs();
         } catch (Exception e) {
@@ -236,14 +256,31 @@ public class RationalTest extends TestCase {
             e.printStackTrace();
         }
         assertTrue(gotException);
-        assertEquals(new Rational(1,4),sixth.abs());
-        assertEquals(new Rational(1,4),seventh.abs());
-        assertEquals(new Rational(1,4),seventh.abs());     
+        assertEquals(new Rational(1,4),seventh.abs()); 
+    }
+
+    public void testEquals() {
+        Rational s = new Rational(1,1);
+        assertTrue(s.equals(new Rational(2,2)));
+        assertFalse(s.equals(new Rational(2,3)));
+        assertFalse(s.equals(new Rational(1,1)));
+        assertFalse(s.equals(s));
+        assertFalse(s.equals(null));
+    }
+
+    public void createException() {
+        Exception e = new IllegalArgumentToSquareRootException(new Rational(-3,1));
+        assertEquals(e.getMessage(), "Illegal argument to square root, should be in range [0,2147483647] got -3/1");
     }
 
     public void testToSTring() {
         Rational s = new Rational(1,4);
         assertEquals(s.toString(),"1/4");
+    }
+
+    public void testMain() {
+        String[] args = {};
+        Rational.main(args);
     }
 
 
@@ -257,6 +294,31 @@ public class RationalTest extends TestCase {
         }
         assertTrue( sRoot.isLessThan( HALF.plus( Rational.getTolerance() ) ) 
                         && HALF.minus( Rational.getTolerance() ).isLessThan( sRoot ) );
+        s = new Rational( 0, 0 );
+        try {
+            sRoot = s.root();
+        } catch (IllegalArgumentToSquareRootException e) {
+            e.printStackTrace();
+        }
+        s = new Rational( 5, 3 );
+        try {
+            sRoot = s.root();
+        } catch (IllegalArgumentToSquareRootException e) {
+            e.printStackTrace();
+        }
+        s = new Rational( 4, 9 );
+        try {
+            sRoot = s.root();
+        } catch (IllegalArgumentToSquareRootException e) {
+            e.printStackTrace();
+        }
+        s = new Rational( -4, 1 );
+        try {
+            sRoot = s.root();
+        } catch (IllegalArgumentToSquareRootException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static void main(String args[]) {
