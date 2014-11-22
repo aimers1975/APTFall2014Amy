@@ -57,7 +57,6 @@ public class TestMp3Player extends TestCase {
     mp3.loadSongs(list);
 
     mp3.play();
-
     assertTrue(mp3.isPlaying());
 
     mp3.prev();
