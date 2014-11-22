@@ -22,7 +22,7 @@ public class TestEasyMp3Player extends TestCase {
   }
 
   public void testPlay() {
-
+    System.out.println("Starting test play.");
     mockMp3Player.loadSongs(list);
     expectLastCall();
     expect(mockMp3Player.isPlaying()).andReturn(false);
@@ -52,12 +52,13 @@ public class TestEasyMp3Player extends TestCase {
     mockMp3Player.stop();
     assertEquals(mockMp3Player.currentPosition(), 0.0, 0.1);
     assertFalse(mockMp3Player.isPlaying());
+    System.out.println("Test play complete.");
 
   }
 
 
   public void testPlayNoList() {
-
+    System.out.println("Test play no list.");
     expect(mockMp3Player.isPlaying()).andReturn(false);
     mockMp3Player.play();
     expectLastCall();
@@ -85,9 +86,11 @@ public class TestEasyMp3Player extends TestCase {
     mockMp3Player.stop();
     assertEquals(mockMp3Player.currentPosition(), 0.0, 0.1);
     assertFalse(mockMp3Player.isPlaying());
+    System.out.println("Test play no list complete.");
   }
 
   public void testAdvance() {
+    System.out.println("Starting test advance.");
     mockMp3Player.loadSongs(list);
     expectLastCall();
     mockMp3Player.play();
@@ -142,6 +145,7 @@ public class TestEasyMp3Player extends TestCase {
     mockMp3Player.next();
     assertEquals(mockMp3Player.currentSong(), list.get(3));
     assertTrue(mockMp3Player.isPlaying());
+    System.out.println("Test advance Complete");
   }
 
 }

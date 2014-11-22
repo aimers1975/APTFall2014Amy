@@ -113,4 +113,3 @@ public class MockMp3Player implements Mp3Player {
   	songs = new ArrayList<String>(names.subList(0,names.size()));
   	}
   }
-}

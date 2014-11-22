@@ -24,6 +24,7 @@ public class TestMp3Player extends TestCase {
   }
 
   public void testPlay() {
+    System.out.println("Starting test play.");
     
     mp3.loadSongs(list);
     assertFalse(mp3.isPlaying());
@@ -34,11 +35,12 @@ public class TestMp3Player extends TestCase {
     assertTrue(mp3.currentPosition() != 0.0);
     mp3.stop();
     assertEquals(mp3.currentPosition(), 0.0, 0.1);
+    System.out.println("Test play complete.");
 
   }
 
   public void testPlayNoList() {
-
+    System.out.println("Starting test no list.");
     // Don't set the list up
     assertFalse(mp3.isPlaying());
     mp3.play();
@@ -50,9 +52,11 @@ public class TestMp3Player extends TestCase {
     mp3.stop();
     assertEquals(mp3.currentPosition(), 0.0, 0.1);
     assertFalse(mp3.isPlaying());
+    System.out.println("Test no list complete.");
   }
 
   public void testAdvance() {
+    System.out.println("Starting test advance.");
 
     mp3.loadSongs(list);
 
@@ -77,6 +81,7 @@ public class TestMp3Player extends TestCase {
     mp3.next();
     assertEquals(mp3.currentSong(), list.get(3));
     assertTrue(mp3.isPlaying());
+    System.out.println("Test advance complete.");
   }
 
 }
