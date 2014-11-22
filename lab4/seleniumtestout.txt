@@ -1,0 +1,121 @@
+
+C:\APTFall2014Amy\lab4>java -cp C:\APTFall2014Amy\lab4\junit-4.11.jar;C:\APTFall
+2014Amy\lab4\selenium-server-standalone-2.44.0.jar;. TestAdnansSite
+.Starting temperature results precision test.
+Finding element userID for login.
+Result displayed, possible log in: bob
+Result div text is: Convert from Farenheit to Celsius
+Entering farenheitTemperature: 213
+Temp result was displayed: 213 Farenheit = 100.56 Celsius
+Finding element userID for login.
+Result displayed, possible log in: charley
+Result div text is: Convert from Farenheit to Celsius
+Entering farenheitTemperature: 432
+Temp result was displayed: 432 Farenheit = 222.22 Celsius
+Finding element userID for login.
+Result displayed, possible log in: bob
+Result div text is: Convert from Farenheit to Celsius
+Entering farenheitTemperature: 212
+Temp result was displayed: 212 Farenheit = 100 Celsius
+F.starting test upper case login.
+Finding element userID for login.
+F.Starting username  with whitespace test.
+Finding element userID for login.
+Result displayed, possible log in:     ANDY
+Result div text is: Convert from Farenheit to Celsius
+Finding element userID for login.
+Result displayed, possible log in:     charley
+Result div text is: Convert from Farenheit to Celsius
+Username whitepspace test complete.
+.Starting wrong format temperature test.
+Finding element userID for login.
+Result displayed, possible log in: bob
+Result div text is: Convert from Farenheit to Celsius
+Entering farenheitTemperature: 9.73E2
+Temp result was displayed: 9.73E2 Farenheit = 522.78 Celsius
+F.Starting lockout test.
+Finding element userID for login.
+Result displayed, possible log in: charley
+Result div text is: Input combination of user id and password is incorrect.
+Finding element userID for login.
+Result displayed, possible log in: charley
+Result div text is: Wait for 10 seconds before trying to login again
+F.Starting test correct temperature format.
+Finding element userID for login.
+Result displayed, possible log in: bob
+Result div text is: Convert from Farenheit to Celsius
+Entering farenheitTemperature: 97
+Temp result was displayed: 97 Farenheit = 36.11 Celsius
+Finding element userID for login.
+Entering farenheitTemperature: -3.14
+Temp result was displayed: Wait for 10 seconds before trying to login again
+F.Starting test lower case login.
+Finding element userID for login.
+Result displayed, possible log in: andy
+Result div text is: Convert from Farenheit to Celsius
+Finding element userID for login.
+Result displayed, possible log in: charley
+Result div text is: Convert from Farenheit to Celsius
+Ending lowercase login test.
+.Starting test password whitespace.
+Finding element userID for login.
+Result displayed, possible log in: bob
+Result div text is: Convert from Farenheit to Celsius
+Whitespace password test complete
+.Starting test wrong case password
+Finding element userID for login.
+Result displayed, possible log in: bob
+Result div text is: Wait for 10 seconds before trying to login again
+F
+Time: 191.217
+There were 6 failures:
+1) testTempResultPrecision(TestAdnansSite)junit.framework.ComparisonFailure: exp
+ected:<212 Farenheit = 100[] Celsius> but was:<212 Farenheit = 100[.00] Celsius>
+
+        at TestAdnansSite.testTempResultPrecision(TestAdnansSite.java:195)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+        at TestAdnansSite.main(TestAdnansSite.java:242)
+2) testUpperCaseLogins(TestAdnansSite)junit.framework.ComparisonFailure: expecte
+d:<[]> but was:<[Convert from Farenheit to Celsius]>
+        at TestAdnansSite.testUpperCaseLogins(TestAdnansSite.java:113)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+        at TestAdnansSite.main(TestAdnansSite.java:242)
+3) testWongFormatTemp(TestAdnansSite)junit.framework.ComparisonFailure: expected
+:<[9.73E2 Farenheit = 522.78 Celsius]> but was:<[Need to enter a valid temperatu
+re!Got a NumberFormatException on 9.73E2]>
+        at TestAdnansSite.testWongFormatTemp(TestAdnansSite.java:214)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+        at TestAdnansSite.main(TestAdnansSite.java:242)
+4) testLockout(TestAdnansSite)junit.framework.ComparisonFailure: expected:<[Wait
+ for 10 seconds before trying to login again]> but was:<[Input combination of us
+er id and password is incorrect.]>
+        at TestAdnansSite.testLockout(TestAdnansSite.java:156)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+        at TestAdnansSite.main(TestAdnansSite.java:242)
+5) testCorrectFormatTemp(TestAdnansSite)junit.framework.ComparisonFailure: expec
+ted:<[Wait for 10 seconds before trying to login again]> but was:<[-3.14 Farenhe
+it = -19.52 Celsius]>
+        at TestAdnansSite.testCorrectFormatTemp(TestAdnansSite.java:232)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+        at TestAdnansSite.main(TestAdnansSite.java:242)
+6) testWrongCasePassword(TestAdnansSite)junit.framework.ComparisonFailure: expec
+ted:<[Wait for 10 seconds before trying to login again]> but was:<[Input combina
+tion of user id and password is incorrect.]>
+        at TestAdnansSite.testWrongCasePassword(TestAdnansSite.java:122)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+        at TestAdnansSite.main(TestAdnansSite.java:242)
+
+FAILURES!!!
+Tests run: 9,  Failures: 6,  Errors: 0

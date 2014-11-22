@@ -12,6 +12,7 @@ public class TestAdnansSite extends TestCase {
 
     public static String loginTempSite(String username, String password, WebDriver thisdriver, String elementToFind, Boolean byTagname) {
         thisdriver.get("http://apt-public.appspot.com/testing-lab-login.html");
+        System.out.println("Finding element userID for login.");
         WebElement query = thisdriver.findElement(By.name("userId"));
         for(int i=0; i<15; i++) {
             query.sendKeys(Keys.BACK_SPACE);
@@ -25,7 +26,7 @@ public class TestAdnansSite extends TestCase {
 
         query2.sendKeys(Keys.TAB);
         query2.sendKeys(Keys.ENTER);
-
+        
         // Sleep until the div we want is visible or 5 seconds is over
         Long end = System.currentTimeMillis() + 20000;
         String resultdisplayed = "";
@@ -39,7 +40,8 @@ public class TestAdnansSite extends TestCase {
                 }
                 if (resultsDiv.isDisplayed()) {
                     resultdisplayed = resultsDiv.getText();
-                    System.out.println("Result is: " + resultdisplayed);
+                    System.out.println("Result displayed, possible log in: " + username);
+                    System.out.println("Result div text is: " + resultdisplayed);
                     break;
                 }
             } catch (Exception e) {
@@ -51,8 +53,10 @@ public class TestAdnansSite extends TestCase {
 
     public static String enterTemp(String temp, WebDriver driver) {
         Long end = System.currentTimeMillis() + 20000;
+        System.out.println("Entering farenheitTemperature: " + temp);
         while (System.currentTimeMillis() < end) {
             try {
+                
                 WebElement resultsDiv = driver.findElement(By.name("farenheitTemperature"));
                 if (resultsDiv.isDisplayed()) {
                     for(int i=0; i<4; i++) {
@@ -73,7 +77,7 @@ public class TestAdnansSite extends TestCase {
                 WebElement resultsDiv = driver.findElement(By.tagName("h2"));
                 if (resultsDiv.isDisplayed()) {
                     resultdisplayed = resultsDiv.getText();
-                    System.out.println("Result was displayed: " + resultdisplayed);
+                    System.out.println("Temp result was displayed: " + resultdisplayed);
                     break;
                 } else {
                     
@@ -121,6 +125,7 @@ public class TestAdnansSite extends TestCase {
     }
     
     public static void testWrongUserWhitespace() {
+        System.out.println("Starting username  with whitespace test.");
         WebDriver driver = new FirefoxDriver();
         String resultdisplayed = loginTempSite("    ANDY  ","apple",driver,"h3",true);
         driver.quit();
@@ -129,19 +134,21 @@ public class TestAdnansSite extends TestCase {
         driver = new FirefoxDriver();
         resultdisplayed = loginTempSite("    charley   ","china",driver,"h3",true);
         driver.quit();
-        assertEquals(resultdisplayed, "Convert from Farenheit to Celsius");  
+        assertEquals(resultdisplayed, "Convert from Farenheit to Celsius"); 
+        System.out.println("Username whitepspace test complete."); 
     }
 
     public static void testWrongPasswordWhitespace() {
+        System.out.println("Starting test password whitespace.");
         WebDriver driver = new FirefoxDriver();
         String resultdisplayed = loginTempSite("bob","    bathtub   ",driver,"h3",true);
         driver.quit();
         assertEquals(resultdisplayed, "Convert from Farenheit to Celsius");
-        System.out.println("Wrong whitespace password test complete");
+        System.out.println("Whitespace password test complete");
     }
 
     public static void testLockout() {
-
+        System.out.println("Starting lockout test.");
         WebDriver driver = new FirefoxDriver();
         String resultdisplayed = loginTempSite("charley","fail",driver,"h2",true);
         assertEquals(resultdisplayed, "Input combination of user id and password is incorrect.");
@@ -150,7 +157,7 @@ public class TestAdnansSite extends TestCase {
         resultdisplayed = loginTempSite("charley","fail",driver,"h2",true);
         assertEquals(resultdisplayed, "Wait for 1 minute before trying to login again");
 
-        driver = new FirefoxDriver();
+
         resultdisplayed = loginTempSite("charley","bathtub",driver,"h3",true);
         driver.quit();
         assertFalse(resultdisplayed.equals("Convert from Farenheit to Celsius")); 
@@ -168,6 +175,7 @@ public class TestAdnansSite extends TestCase {
 
     public static void testTempResultPrecision() {
         //97 or -3.14, but not 9.73E2)
+        System.out.println("Starting temperature results precision test.");
         WebDriver driver = new FirefoxDriver();
         loginTempSite("bob","bathtub",driver,"h3",true);
         String resultdisplayed = enterTemp("213",driver);      
@@ -198,6 +206,7 @@ public class TestAdnansSite extends TestCase {
 
     public static void testWongFormatTemp() {
         //97 or -3.14, but not 9.73E2)
+        System.out.println("Starting wrong format temperature test.");
         WebDriver driver = new FirefoxDriver();
         loginTempSite("bob","bathtub",driver,"h3",true);
         String resultdisplayed = enterTemp("9.73E2",driver);      
@@ -209,6 +218,7 @@ public class TestAdnansSite extends TestCase {
 
     public static void testCorrectFormatTemp() {
         //97 or -3.14, but not 9.73E2)
+        System.out.println("Starting test correct temperature format.");
         WebDriver driver = new FirefoxDriver();
         loginTempSite("bob","bathtub",driver,"h3",true);
         String resultdisplayed = enterTemp("97",driver);      
