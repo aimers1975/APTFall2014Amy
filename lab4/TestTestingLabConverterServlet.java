@@ -43,6 +43,48 @@ public class TestTestingLabConverterServlet extends TestCase {
 					+ "</h2></body></html>\r\n",response.getOutputStreamContents());
   }
 
+public void test_valid_temp_neg() throws Exception {
+    TestingLabConverterServlet s = new TestingLabConverterServlet();
+    MockHttpServletRequest request = 
+      new MockHttpServletRequest();
+    MockHttpServletResponse response = 
+      new MockHttpServletResponse();
+
+    String goodParam = "-3.14";
+    Double celTempDouble = 100.0*(Double.parseDouble(goodParam) - 32.0)/180.0;
+  DecimalFormat df = new DecimalFormat("#.##");
+  String celTemp = df.format(celTempDouble);
+
+    request.setupAddParameter("farenheitTemperature", goodParam);
+    response.setExpectedContentType("text/html");
+    s.doGet(request,response);
+    response.verify();
+    assertEquals("<html><head><title>Temperature Converter Result</title>"
+          + "</head><body><h2>" + goodParam + " Farenheit = " + celTemp + " Celsius "
+          + "</h2>\r\n" + "<p><h3>The temperature in Austin is 451 degrees Farenheit</h3>\r\n</body></html>\r\n",response.getOutputStreamContents());
+  }
+
+public void test_valid_temp_0() throws Exception {
+    TestingLabConverterServlet s = new TestingLabConverterServlet();
+    MockHttpServletRequest request = 
+      new MockHttpServletRequest();
+    MockHttpServletResponse response = 
+      new MockHttpServletResponse();
+
+    String goodParam = "0";
+    Double celTempDouble = 100.0*(Double.parseDouble(goodParam) - 32.0)/180.0;
+  DecimalFormat df = new DecimalFormat("#.##");
+  String celTemp = df.format(celTempDouble);
+
+    request.setupAddParameter("farenheitTemperature", goodParam);
+    response.setExpectedContentType("text/html");
+    s.doGet(request,response);
+    response.verify();
+    assertEquals("<html><head><title>Temperature Converter Result</title>"
+          + "</head><body><h2>" + goodParam + " Farenheit = " + celTemp + " Celsius "
+          + "</h2>\r\n" + "<p><h3>The temperature in Austin is 451 degrees Farenheit</h3>\r\n</body></html>\r\n",response.getOutputStreamContents());
+  }
+
   public void test_valid_temp() throws Exception {
     TestingLabConverterServlet s = new TestingLabConverterServlet();
     MockHttpServletRequest request = 
@@ -62,5 +104,68 @@ public class TestTestingLabConverterServlet extends TestCase {
     assertEquals("<html><head><title>Temperature Converter Result</title>"
 					+ "</head><body><h2>" + goodParam + " Farenheit = " + celTemp + " Celsius "
 					+ "</h2>\r\n" + "<p><h3>The temperature in Austin is 451 degrees Farenheit</h3>\r\n</body></html>\r\n",response.getOutputStreamContents());
+  }
+
+  public void test_valid_temp_32() throws Exception {
+    TestingLabConverterServlet s = new TestingLabConverterServlet();
+    MockHttpServletRequest request = 
+      new MockHttpServletRequest();
+    MockHttpServletResponse response = 
+      new MockHttpServletResponse();
+
+    String goodParam = "32";
+    Double celTempDouble = 100.0*(Double.parseDouble(goodParam) - 32.0)/180.0;
+    DecimalFormat df = new DecimalFormat("#.#");
+    String celTemp = df.format(celTempDouble);
+
+    request.setupAddParameter("farenheitTemperature", goodParam);
+    response.setExpectedContentType("text/html");
+    s.doGet(request,response);
+    response.verify();
+    assertEquals("<html><head><title>Temperature Converter Result</title>"
+          + "</head><body><h2>" + goodParam + " Farenheit = " + celTemp + " Celsius "
+          + "</h2>\r\n" + "<p><h3>The temperature in Austin is 451 degrees Farenheit</h3>\r\n</body></html>\r\n",response.getOutputStreamContents());
+  }
+
+  public void test_valid_temp_213() throws Exception {
+    TestingLabConverterServlet s = new TestingLabConverterServlet();
+    MockHttpServletRequest request = 
+      new MockHttpServletRequest();
+    MockHttpServletResponse response = 
+      new MockHttpServletResponse();
+
+    String goodParam = "213";
+    Double celTempDouble = 100.0*(Double.parseDouble(goodParam) - 32.0)/180.0;
+  DecimalFormat df = new DecimalFormat("#.#");
+  String celTemp = df.format(celTempDouble);
+
+    request.setupAddParameter("farenheitTemperature", goodParam);
+    response.setExpectedContentType("text/html");
+    s.doGet(request,response);
+    response.verify();
+    assertEquals("<html><head><title>Temperature Converter Result</title>"
+          + "</head><body><h2>" + goodParam + " Farenheit = " + celTemp + " Celsius "
+          + "</h2>\r\n" + "<p><h3>The temperature in Austin is 451 degrees Farenheit</h3>\r\n</body></html>\r\n",response.getOutputStreamContents());
+  }
+
+  public void test_invalid_temp_7e52() throws Exception {
+    TestingLabConverterServlet s = new TestingLabConverterServlet();
+    MockHttpServletRequest request = 
+      new MockHttpServletRequest();
+    MockHttpServletResponse response = 
+      new MockHttpServletResponse();
+
+    String goodParam = "7E52";
+    Double celTempDouble = 100.0*(Double.parseDouble(goodParam) - 32.0)/180.0;
+  DecimalFormat df = new DecimalFormat("#.#");
+  String celTemp = df.format(celTempDouble);
+
+    request.setupAddParameter("farenheitTemperature", goodParam);
+    response.setExpectedContentType("text/html");
+    s.doGet(request,response);
+    response.verify();
+    assertFalse(response.getOutputStreamContents().equals("<html><head><title>Temperature Converter Result</title>"
+          + "</head><body><h2>" + goodParam + " Farenheit = " + celTemp + " Celsius "
+          + "</h2>\r\n" + "<p><h3>The temperature in Austin is 451 degrees Farenheit</h3>\r\n</body></html>\r\n"));
   }
 }
