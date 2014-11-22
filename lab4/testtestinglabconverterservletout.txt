@@ -3,27 +3,32 @@ C:\APTFall2014Amy\lab4\mockobjects-0.6-j1.4-j2ee1.2.jar;C:\APTFall2014Amy\lab4\s
 elenium-server-standalone-2.11.0.jar;. org.junit.runner.JUnitCore TestTestingLab
 ConverterServlet
 JUnit version 4.10
-.Fartemp is: 0
 .Running sample test
 Fartemp is: boo!
-.Fartemp is: null
-.Fartemp is: 50
-.Fartemp is: 32
+.Fartemp is: 0
+Expected celcius temp: -17.78
+.Expected number format exception.
+Fartemp is: 7E52
+E.Expected celcius temp: 10
+Fartemp is: 50
+.Expected celcius temp: 0
+Fartemp is: 32
 .Fartemp is: -3.14
-.Fartemp is: 213
-E.Fartemp is: 7E52
-E
-Time: 0.045
+Expected celcius temp: -19.52
+.Expected celcius temp: 100.6
+Fartemp is: 213
+E.Fartemp is: null
+
+Time: 0.051
 There were 2 failures:
-1) test_valid_temp_213(TestTestingLabConverterServlet)
-junit.framework.ComparisonFailure: expected:<...213 Farenheit = 100.[]6 Celsius
-</h2>
-<p>...> but was:<...213 Farenheit = 100.[5]6 Celsius </h2>
-<p>...>
-        at junit.framework.Assert.assertEquals(Assert.java:85)
-        at junit.framework.Assert.assertEquals(Assert.java:91)
-        at TestTestingLabConverterServlet.test_valid_temp_213(TestTestingLabConv
-erterServlet.java:146)
+1) test_invalid_temp_7e52(TestTestingLabConverterServlet)
+junit.framework.AssertionFailedError
+        at junit.framework.Assert.fail(Assert.java:48)
+        at junit.framework.Assert.assertTrue(Assert.java:20)
+        at junit.framework.Assert.assertFalse(Assert.java:34)
+        at junit.framework.Assert.assertFalse(Assert.java:41)
+        at TestTestingLabConverterServlet.test_invalid_temp_7e52(TestTestingLabC
+onverterServlet.java:169)
         at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
         at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
         at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
@@ -52,14 +57,15 @@ java:83)
         at org.junit.runner.JUnitCore.runMain(JUnitCore.java:98)
         at org.junit.runner.JUnitCore.runMainAndExit(JUnitCore.java:53)
         at org.junit.runner.JUnitCore.main(JUnitCore.java:45)
-2) test_invalid_temp_7e52(TestTestingLabConverterServlet)
-junit.framework.AssertionFailedError
-        at junit.framework.Assert.fail(Assert.java:48)
-        at junit.framework.Assert.assertTrue(Assert.java:20)
-        at junit.framework.Assert.assertFalse(Assert.java:34)
-        at junit.framework.Assert.assertFalse(Assert.java:41)
-        at TestTestingLabConverterServlet.test_invalid_temp_7e52(TestTestingLabC
-onverterServlet.java:167)
+2) test_valid_temp_213(TestTestingLabConverterServlet)
+junit.framework.ComparisonFailure: expected:<...213 Farenheit = 100.[]6 Celsius
+</h2>
+<p>...> but was:<...213 Farenheit = 100.[5]6 Celsius </h2>
+<p>...>
+        at junit.framework.Assert.assertEquals(Assert.java:85)
+        at junit.framework.Assert.assertEquals(Assert.java:91)
+        at TestTestingLabConverterServlet.test_valid_temp_213(TestTestingLabConv
+erterServlet.java:148)
         at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
         at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
         at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)

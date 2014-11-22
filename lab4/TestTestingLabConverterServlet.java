@@ -59,6 +59,7 @@ public void test_valid_temp_neg() throws Exception {
     response.setExpectedContentType("text/html");
     s.doGet(request,response);
     response.verify();
+    System.out.println("Expected celcius temp: " + celTemp);
     assertEquals("<html><head><title>Temperature Converter Result</title>"
           + "</head><body><h2>" + goodParam + " Farenheit = " + celTemp + " Celsius "
           + "</h2>\r\n" + "<p><h3>The temperature in Austin is 451 degrees Farenheit</h3>\r\n</body></html>\r\n",response.getOutputStreamContents());
@@ -80,6 +81,7 @@ public void test_valid_temp_0() throws Exception {
     response.setExpectedContentType("text/html");
     s.doGet(request,response);
     response.verify();
+    System.out.println("Expected celcius temp: " + celTemp);
     assertEquals("<html><head><title>Temperature Converter Result</title>"
           + "</head><body><h2>" + goodParam + " Farenheit = " + celTemp + " Celsius "
           + "</h2>\r\n" + "<p><h3>The temperature in Austin is 451 degrees Farenheit</h3>\r\n</body></html>\r\n",response.getOutputStreamContents());
@@ -94,9 +96,9 @@ public void test_valid_temp_0() throws Exception {
 
     String goodParam = "50";
     Double celTempDouble = 100.0*(Double.parseDouble(goodParam) - 32.0)/180.0;
-	DecimalFormat df = new DecimalFormat("#.##");
-	String celTemp = df.format(celTempDouble);
-
+  	DecimalFormat df = new DecimalFormat("#.##");
+	  String celTemp = df.format(celTempDouble);
+    System.out.println("Expected celcius temp: " + celTemp);
     request.setupAddParameter("farenheitTemperature", goodParam);
     response.setExpectedContentType("text/html");
     s.doGet(request,response);
@@ -117,7 +119,7 @@ public void test_valid_temp_0() throws Exception {
     Double celTempDouble = 100.0*(Double.parseDouble(goodParam) - 32.0)/180.0;
     DecimalFormat df = new DecimalFormat("#.#");
     String celTemp = df.format(celTempDouble);
-
+    System.out.println("Expected celcius temp: " + celTemp);
     request.setupAddParameter("farenheitTemperature", goodParam);
     response.setExpectedContentType("text/html");
     s.doGet(request,response);
@@ -136,9 +138,9 @@ public void test_valid_temp_0() throws Exception {
 
     String goodParam = "213";
     Double celTempDouble = 100.0*(Double.parseDouble(goodParam) - 32.0)/180.0;
-  DecimalFormat df = new DecimalFormat("#.#");
-  String celTemp = df.format(celTempDouble);
-
+    DecimalFormat df = new DecimalFormat("#.#");
+    String celTemp = df.format(celTempDouble);
+    System.out.println("Expected celcius temp: " + celTemp);
     request.setupAddParameter("farenheitTemperature", goodParam);
     response.setExpectedContentType("text/html");
     s.doGet(request,response);
@@ -157,9 +159,9 @@ public void test_valid_temp_0() throws Exception {
 
     String goodParam = "7E52";
     Double celTempDouble = 100.0*(Double.parseDouble(goodParam) - 32.0)/180.0;
-  DecimalFormat df = new DecimalFormat("#.#");
-  String celTemp = df.format(celTempDouble);
-
+    DecimalFormat df = new DecimalFormat("#.#");
+    String celTemp = df.format(celTempDouble);
+    System.out.println("Expected number format exception.");
     request.setupAddParameter("farenheitTemperature", goodParam);
     response.setExpectedContentType("text/html");
     s.doGet(request,response);
